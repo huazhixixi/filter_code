@@ -1,12 +1,12 @@
-from library2.channel import LinearFiber
+from library.channel import LinearFiber
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from library2 import QamSignal
-from library2 import NonlinearFiber
-from library2 import WSS
-from library2 import ConstantGainEdfa, Laser
+from library import QamSignal
+from library import NonlinearFiber
+from library import WSS
+from library import ConstantGainEdfa, Laser
 import numpy as np
 import copy
 
