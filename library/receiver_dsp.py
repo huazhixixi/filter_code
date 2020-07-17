@@ -342,6 +342,8 @@ class Superscalar(PhaseRecovery):
 
         return cpr_symbols
 
+from .numba_core import lms_equalize_core_pll
+
 class LMS_PLL(Equalizer):
     def __init__(self, g,ntaps, loops, train_iter, lr_train, lr_dd=None):
         super().__init__(ntaps=ntaps, lr=lr_train,loops=loops)

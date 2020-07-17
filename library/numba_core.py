@@ -81,8 +81,9 @@ def lms_equalize_core(ex, ey, train_symbol,wxx, wyy, wxy, wyx, mu_train,mu_dd,is
 
 lms_equalize_core_pll_type = \
     [(complex128[:, :], complex128[:, :], double, complex128[:, :], complex128[:, :], complex128[:, :],
-      complex128[:, :], complex128[:, :],double,double,boolean)]
-@numba.njit(lms_equalize_core_pll_type,cache=True)
+      complex128[:, :], complex128[:, :], double, double, boolean)]
+      
+@numba.njit(cache=True)
 def lms_equalize_core_pll(ex, ey,g, train_symbol,wxx, wyy, wxy, wyx, mu_train,mu_dd,is_train):
     symbols = np.zeros((2, ex.shape[0]), dtype=np.complex128)
     error_xpol_array = np.zeros((1, ex.shape[0]), dtype=np.float64)

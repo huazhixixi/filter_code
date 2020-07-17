@@ -1,4 +1,4 @@
-from library import NonlinearFiber
+from library import NonlinearFiber,LinearFiber
 FIBER = {
     1: {"alpha": 0.2, 'D': 16.7, 'gamma': 1.3},
     2: {"alpha": 0.18, "D": 20.1, "gamma": 0.9},
@@ -12,7 +12,6 @@ def fiber_for_reconstruct(config):
         D = FIBER[kind]['D']
         gamma = FIBER[kind]['gamma']
 
-        fibers.append(NonlinearFiber(
-            alpha, D, 80, 1550, 0, 'single', gamma=gamma))
+        fibers.append(LinearFiber(alpha,D,80,0,1550))
 
     return fibers
