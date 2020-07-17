@@ -12,8 +12,8 @@ import copy
 
 FIBER = {
     1: {"alpha": 0.2, 'D': 16.7, 'gamma': 1.3},
-    2: {"alpha": 0.2, "D": 16.7, "gamma": 1.3},
-    3: {"alpha": 0.2, "D": 16.7, "gamma": 1.3}
+    2: {"alpha": 0.18, "D": 20.1, "gamma": 0.9},
+    3: {"alpha": 0.21, "D": 4.3, "gamma": 1.47}
 }
 
 base_dir = '../data'
