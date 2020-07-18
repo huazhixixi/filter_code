@@ -99,4 +99,3 @@ def extract_spectrum(name, config_ith):
     return pxx, lms, signal.samples, tx_symbol
     
 extract_spectrum('data/0_0.mat',0)
-
