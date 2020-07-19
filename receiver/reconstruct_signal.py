@@ -40,7 +40,7 @@ def receiver_nonlinear_noise(name, config_ith):
     from library import matched_filter
    
 
-    config = joblib.load('simulate_data/config_setting')[config_ith]
+    config = joblib.load('../simulate_data/config_setting')[config_ith]
     signal = __reconstruct_signal(name,config)
     fibers = fiber_for_reconstruct(config)
     
@@ -61,7 +61,10 @@ def receiver_nonlinear_noise(name, config_ith):
     noise_power = np.sum(np.mean(np.abs(noise) ** 2, axis=-1))
     
     nonlinear_snr = 10 * np.log10((2 - noise_power) / noise_power)
-    return nonlinear_snr
+
+
+
+    return nonlinear_snr,signal
 
 def extract_spectrum(name, config_ith):
     import joblib
@@ -70,7 +73,7 @@ def extract_spectrum(name, config_ith):
     from library import matched_filter
     from scipy.signal import welch
 
-    config = joblib.load('simulate_data/config_setting')[config_ith]
+    config = joblib.load('../simulate_data/config_setting')[config_ith]
     signal = QamSignal.load(name,True)
     fibers = fiber_for_reconstruct(config)
     
@@ -91,11 +94,35 @@ def extract_spectrum(name, config_ith):
 
     noise_power = np.sum(np.mean(np.abs(noise) ** 2, axis=-1))
 
-    nonlinear_snr = 10 * np.log10((2 - noise_power) / noise_power)
+
 
 
     # pxx,lms,signal.samples,tx_symbol
 
-    return pxx, lms, signal.samples, tx_symbol
+    return pxx, lms, signal, tx_symbol
     
-extract_spectrum('data/0_0.mat',0)
+def main():
+    import os
+    from scipy.fft import fft,fftshift
+    from scipy.io import savemat
+    names = os.listdir('../data/')
+    import tqdm
+    for name in tqdm.tqdm(names):
+        config_ith = int(name.split('.')[0].split('_')[1])
+        full_name = '../data/'+name
+
+        pxx,lms,signal_real,symbol = extract_spectrum(full_name,config_ith)
+        wxx = np.abs(fftshift(fft(lms.wxx[0])))
+        nonlinear_nsr,signal = receiver_nonlinear_noise(full_name,config_ith)
+        savemat(f'../extracted_features/{name}',
+                {
+                   'spec_lms': np.hstack((pxx,wxx)),
+                    'target': nonlinear_nsr,
+                    'real_rx_samples':signal_real.samples,
+                    'real_tx_symbol':symbol,
+                    'nli_rx_samples':signal.samples,
+                    'nli_tx_symbl':signal.symbol
+                }
+        )
+
+main()

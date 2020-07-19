@@ -53,9 +53,9 @@ def genreate_signal(signal_power):
 
 
 
-def simulate(config,config_ith,power):
+def simulate(config,config_ith):
 
-    #power = config[0]
+    power = config[0]
     nonlinear_fibers = []
     linear_fibers = []
     nonlinear_noises = []
@@ -91,10 +91,10 @@ import tqdm
 def main(config_name):
     import joblib
     total_config = joblib.load(config_name)
-    # 此处可以开多进程
-    for power in tqdm.tqdm(range(4)):
-        config = total_config[0]
-        simulate(config,0,power)
+
+    for config_ith in tqdm.tqdm(range(500)):
+        config = total_config[config_ith]
+        simulate(config,config_ith)
 
 
 main('config_setting')
