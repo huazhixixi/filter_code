@@ -77,14 +77,14 @@ def calc_gn_model(config):
         D = FIBER[span_kind]['D']
         gamma = FIBER[span_kind]['gamma']
 
-        spans.append(GnSpan(length=80, D=16.7, gamma=1.3, lam=1550e-9, alpha=0.2))
+        spans.append(GnSpan(length=80, D=D, gamma=gamma, lam=1550e-9, alpha=alpha))
         edfa = GnEdfa(gain=spans[-1].alpha * spans[-1].length, nf=5)
-    
+        edfas.append(edfa)
     center_channel = sigs[int(np.floor(len(sigs)/2))]
 
-    for span in spans:
+    for idx, span in enumerate(spans):
         span.prop(center_channel, sigs)
-        edfa.prop(center_channel)        
+        edfas[idx].prop(center_channel)        
 
     snr = center_channel.signal / (center_channel.nli + 0)
     
