@@ -81,7 +81,7 @@ def extract_spectrum(name, config_ith):
     signal.samples = resampy.resample(
         signal[:], signal.sps_in_fiber, 2, axis=-1, filter='kaiser_fast')
     signal = matched_filter(signal, 0.02)
-    [f,pxx] = welch(signal.samples[0],detrend=None,return_onesided = False,nfft = 1024)
+    [f,pxx] = welch(signal.samples[0],detrend=None,return_onesided = False,nfft = 1024,fs=signal.fs)
     signal.inplace_normalise()
     from library.receiver_dsp import LMS_PLL
     from library.receiver_dsp import syncsignal_tx2rx
@@ -99,7 +99,7 @@ def extract_spectrum(name, config_ith):
 
     # pxx,lms,signal.samples,tx_symbol
 
-    return pxx, lms, signal, tx_symbol
+    return f,pxx, lms, signal, tx_symbol
     
 def main():
     import os
@@ -111,11 +111,12 @@ def main():
         config_ith = int(name.split('.')[0].split('_')[1])
         full_name = '../data/'+name
 
-        pxx,lms,signal_real,symbol = extract_spectrum(full_name,config_ith)
+        f,pxx,lms,signal_real,symbol = extract_spectrum(full_name,config_ith)
         wxx = np.abs(fftshift(fft(lms.wxx[0])))
         nonlinear_nsr,signal = receiver_nonlinear_noise(full_name,config_ith)
         savemat(f'../extracted_features/{name}',
                 {
+                    'freqs':f,
                    'spec_lms': np.hstack((pxx,wxx)),
                     'target': nonlinear_nsr,
                     'real_rx_samples':signal_real.samples,
