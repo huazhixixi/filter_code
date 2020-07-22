@@ -16,7 +16,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tools import calc_gn_model,calc_xdb_bandwidth,calc_anc
-basedir = '../data/'
+basedir = '../extracted_features/'
 names = os.listdir(basedir)
 
 res = []
@@ -26,7 +26,7 @@ for name in tqdm.tqdm(names, ascii=True):
     try:
         data = loadmat(basedir + name)
     except Exception:
-        continue
+        print(name)
     config_ith = int(name.split('.')[0].split('_')[-1])
     import joblib
     try:
