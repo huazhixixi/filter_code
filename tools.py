@@ -7,6 +7,21 @@ FIBER = {
     3: {"alpha": 0.21, "D": 4.3, "gamma": 1.47}
 }
 
+
+
+def calc_anc(noise,sequence_length):
+    noise_1 = noise[0]
+    noise_2 = noise[1]
+    correlation_sequence = correlate(noise_1,noise_2)/len(noise_1)
+    arg_max = np.argmax(correlation_sequence)
+    correlation_sequence = correlation_sequence[arg_max:]
+    if sequence_length == 1:
+        correlation_sequence = correlation_sequence[0]
+    else:
+        correlation_sequence = correlation_sequence[1]
+    return correlation_sequence
+
+
 def fiber_for_reconstruct(config):
     fibers = []
     for kind in config[1:]:
@@ -37,7 +52,44 @@ def calc_xdb_bandwidth(freq,spectrum,x):
     return np.abs(freq2 - freq1)/1e9,freq1/1e9,freq2/1e9
 
 
-        
+
+def calc_gn_model(config):
+    import joblib
+    from library.gn_model import Signal as GnSignal
+    from library.gn_model import Span as GnSpan
+    from library.gn_model import Edfa as GnEdfa
+    power = config[0]
+    power_lin = (10 ** (power / 10)) * 0.001
+    print(power_lin)
+    baud_rate = 35e9
+    space = 50e9
+    sigs = [
+            GnSignal(signal=power_lin, nli=0, ase=0, carri=193.1e12 + j * space, baudrate=baud_rate, number=j, mf='dp-16qam')
+
+            for j in range(1)]
+
+    spans = []
+    edfas = []
+
+    span_config = config[1:]
+    for span_kind in span_config:
+        alpha = FIBER[span_kind]['alpha']
+        D = FIBER[span_kind]['D']
+        gamma = FIBER[span_kind]['gamma']
+
+        spans.append(GnSpan(length=80, D=16.7, gamma=1.3, lam=1550e-9, alpha=0.2))
+        edfa = GnEdfa(gain=spans[-1].alpha * spans[-1].length, nf=5)
+    
+    center_channel = sigs[int(np.floor(len(sigs)/2))]
+
+    for span in spans:
+        span.prop(center_channel, sigs)
+        edfa.prop(center_channel)        
+
+    snr = center_channel.signal / (center_channel.nli + 0)
+    
+    return 10 * np.log10(snr)
+    
 
 
 
@@ -54,8 +106,8 @@ def main():
 
 
     print('hello world')
-    
-main()
+if __name__ == '__main__':
+    main()
 
     
     
