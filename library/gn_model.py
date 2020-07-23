@@ -284,7 +284,7 @@ if __name__ == '__main__':
 
     space = 50e9
     baud_rate = 35e9
-    for power in range(4,5):
+    for power in range(0,4):
       
 
         power_lin = (10 ** (power / 10)) * 0.001
@@ -293,10 +293,10 @@ if __name__ == '__main__':
         sigs = [
                 Signal(signal=power_lin, nli=0, ase=0, carri=193.1e12 + j * space, baudrate=baud_rate, number=j, mf='dp-16qam')
 
-                for j in range(1)]
+                for j in range(3)]
         print(len(sigs))
 
-        spans = [Span(length=80, D=16.7, gamma=1.3, lam=1550e-9, alpha=0.2) for k in range(4)]
+        spans = [Span(length=80, D=16.7, gamma=1.3, lam=1550e-9, alpha=0.2) for k in range(8)]
         edfa = Edfa(gain=16, nf=5)
         center_channel = sigs[int(np.floor(len(sigs)/2))]
 

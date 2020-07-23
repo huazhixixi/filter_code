@@ -50,26 +50,26 @@ for name in tqdm.tqdm(names, ascii=True):
     feature.insert(0,gn_res)
     feature.insert(0,xielv1)
     feature.insert(0,xielv2)
-    feature.append(target)
+    feature.append(target[0,0])
     
-    # no_filter_samples = data['nli_rx_samples']
-    # no_filter_symbol = data['nli_tx_symbol']
+    no_filter_samples = data['nli_rx_samples']
+    no_filter_symbol = data['nli_tx_symbol']
 
-    # amplitude_noise = np.abs(no_filter_samples) - np.abs(no_filter_symbol)
-    # phase_noise = np.angle(no_filter_samples)/np.angle(no_filter_symbol)
-    # anc_xy = calc_anc(amplitude_noise)
-    # anc_xx = calc_anc(np.vstack((amplitude_noise[0], amplitude_noise[0])))
-    # pnc_xx = calc_anc(phase_noise)
-    # pnc_yy = calc_anc(np.vstack((phase_noise[0], phase_noise[0])))
+    amplitude_noise = np.abs(no_filter_samples) - np.abs(no_filter_symbol)
+    phase_noise = np.angle(no_filter_samples)/np.angle(no_filter_symbol)
+    anc_xy = calc_anc(amplitude_noise)
+    anc_xx = calc_anc(np.vstack((amplitude_noise[0], amplitude_noise[0])))
+    pnc_xx = calc_anc(phase_noise)
+    pnc_yy = calc_anc(np.vstack((phase_noise[0], phase_noise[0])))
     
-    # filter_samples = data['real_rx_samples']
-    # filter_symbol = data['real_tx_symbol']
-    # amplitude_noise = np.abs(filter_samples) - np.abs(filter_symbol)
-    # phase_noise = np.angle(filter_samples)/np.angle(filter_symbol)
-    # anc_xy_filtered = calc_anc(amplitude_noise)
-    # anc_xx_filtered = calc_anc(np.vstack((amplitude_noise[0], amplitude_noise[0])))
-    # pnc_xx_filtered = calc_anc(phase_noise)
-    # pnc_yy_filtered = calc_anc(np.vstack((phase_noise[0], phase_noise[0])))
+    filter_samples = data['real_rx_samples']
+    filter_symbol = data['real_tx_symbol']
+    amplitude_noise = np.abs(filter_samples) - np.abs(filter_symbol)
+    phase_noise = np.angle(filter_samples)/np.angle(filter_symbol)
+    anc_xy_filtered = calc_anc(amplitude_noise)
+    anc_xx_filtered = calc_anc(np.vstack((amplitude_noise[0], amplitude_noise[0])))
+    pnc_xx_filtered = calc_anc(phase_noise)
+    pnc_yy_filtered = calc_anc(np.vstack((phase_noise[0], phase_noise[0])))
     
 
 

@@ -24,7 +24,8 @@ def simulate_one_span(signal, linear_fiber, nonlinear_fiber, edfa, wss):
     signal = nonlinear_fiber.prop(signal)
     signal = edfa.prop(signal)
     power_now = np.sum(np.mean(np.abs(signal.samples) ** 2, axis=-1))
-    signal = wss.prop(signal)
+    if wss is not None:
+        signal = wss.prop(signal)
     power_after = np.sum(np.mean(np.abs(signal.samples) ** 2, axis=-1))
     gain = np.sqrt(power_after / power_now)
     signal[:] = gain * signal[:]
@@ -36,7 +37,8 @@ def simulate_one_span(signal, linear_fiber, nonlinear_fiber, edfa, wss):
     second_signal[:] = np.sqrt( 10 ** ((linear_fiber.alpha * linear_fiber.length) / 10)) * second_signal[:]
     second_signal[:] += noise_sequence
     power_now = np.sum(np.mean(np.abs(second_signal.samples) ** 2, axis=-1))
-    second_signal = wss.prop(second_signal)
+    if wss is not None:
+        second_signal = wss.prop(second_signal)
     power_after = np.sum(np.mean(np.abs(second_signal.samples) ** 2, axis=-1))
     gain = np.sqrt(power_after / power_now)
     second_signal[:] = gain * second_signal[:]
@@ -96,5 +98,6 @@ def main(config_name):
         config = total_config[config_ith]
         simulate(config,config_ith)
 
+if __name__ == '__main__':
 
-main('config_setting')
+    main('config_setting')
