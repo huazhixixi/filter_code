@@ -21,7 +21,7 @@ def generate_instruments(jiange):
     return ins
 
 
-def main(base_dir,):
+def main(base_dir):
     import copy
     for jiange in [1,2,3,4,6]:
         nonlinear_noises = []
