@@ -10,6 +10,7 @@ FIBER = {
 
 
 def calc_anc(noise,sequence_length):
+    from scipy.signal import correlate
     noise_1 = noise[0]
     noise_2 = noise[1]
     correlation_sequence = correlate(noise_1,noise_2)/len(noise_1)
@@ -60,7 +61,7 @@ def calc_gn_model(config):
     from library.gn_model import Edfa as GnEdfa
     power = config[0]
     power_lin = (10 ** (power / 10)) * 0.001
-    print(power_lin)
+    # print(power_lin)
     baud_rate = 35e9
     space = 50e9
     sigs = [

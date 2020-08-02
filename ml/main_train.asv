@@ -1,0 +1,4 @@
+net_anc_target = train_ann(feature,anc_target);
+net_anc_target2 = train_ann(feature,anc_target);
+net_anc_target = train_ann(feature,anc_target);
+net_anc_target = train_ann(feature,anc_target);

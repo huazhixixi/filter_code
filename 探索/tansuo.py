@@ -24,8 +24,9 @@ def generate_instruments(jiange):
 def main(base_dir):
     import copy
     for jiange in [1,2,3,4,6]:
-        nonlinear_noises = []
+
         for signal_power in range(4):
+            nonlinear_noises = []
             span_cnt = 0
             signal = genreate_signal(signal_power)
             tx_samples = copy.deepcopy(signal.samples)
